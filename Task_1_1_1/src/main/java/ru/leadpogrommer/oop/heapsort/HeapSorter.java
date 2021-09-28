@@ -5,21 +5,22 @@ package ru.leadpogrommer.oop.heapsort;
  */
 public class HeapSorter {
     private static void heapify(int[] arr, int i, int heap_size) {
-        int largest = i;
+        int j = i;
+        int largest = j;
         do {
-            i = largest;
-            int left = 2 * i + 1;
-            int right = 2 * i + 2;
+            j = largest;
+            int left = 2 * j + 1;
+            int right = 2 * j + 2;
             if (left < heap_size && arr[left] > arr[largest]) {
                 largest = left;
             }
             if (right < heap_size && arr[right] > arr[largest]) {
                 largest = right;
             }
-            if (largest != i) {
-                swap(arr, i, largest);
+            if (largest != j) {
+                swap(arr, j, largest);
             }
-        }while(largest != i);
+        } while (largest != j);
     }
 
     /**
