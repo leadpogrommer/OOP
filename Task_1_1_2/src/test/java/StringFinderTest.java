@@ -44,5 +44,9 @@ class StringFinderTest {
 
         filename = createTempFile("Some cool multiline text with\nsome cool words");
         assertResult(StringFinder.findSubstring(filename, "cool"), 5, 35);
+
+
+        filename = createTempFile("aaabb");
+        assertResult(StringFinder.findSubstring(filename, "aabb"), 1);
     }
 }
