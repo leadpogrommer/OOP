@@ -160,3 +160,6 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,gradle,java
 .idea
+/gradlew
+/gradlew.bat
+/gradle/
