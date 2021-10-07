@@ -1,8 +1,6 @@
 package ru.leadpogrommer.oop.stringfinder;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,16 +10,13 @@ import java.util.List;
  */
 public class StringFinder {
     /**
-     * Finds all occurrences  of string in files
-     *
-     * @param filepath Path to the file where we should search for string
-     * @param needle   String that should be searched
+     * @param reader Reader that reads haystack
+     * @param needle String that should be searched
      * @return List with string positions
-     * @throws IOException If file does not exist
+     * @throws IOException When internal BufferedReader fail to mrk/reset/skip
      */
-    public static List<Integer> findSubstring(String filepath, String needle) throws IOException {
-        var rdr = new BufferedReader(new FileReader(filepath));
-
+    public static List<Integer> findSubstring(Reader reader, String needle) throws IOException {
+        var rdr = new BufferedReader(reader);
 
         var m = needle.length();
         var s = needle.toCharArray();
@@ -68,5 +63,17 @@ public class StringFinder {
         }
 
         return ret;
+    }
+
+    /**
+     * Finds all occurrences  of string in files
+     *
+     * @param filepath Path to the file where we should search for string
+     * @param needle   String that should be searched
+     * @return List with string positions
+     * @throws IOException If file does not exist
+     */
+    public static List<Integer> findSubstring(String filepath, String needle) throws IOException {
+        return findSubstring(new FileReader(filepath), needle);
     }
 }

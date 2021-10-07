@@ -1,5 +1,7 @@
 package ru.leadpogrommer.oop.stringfinder;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -7,9 +9,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class StringFinderTest {
     static Stream<Arguments> getStrings() {
@@ -20,7 +24,9 @@ class StringFinderTest {
                 Arguments.of("aaabb", "aabb", new int[]{1}),
                 Arguments.of("Some cool multiline text with\nsome cool words", "cool", new int[]{5, 35}),
                 Arguments.of("", "a", new int[]{}),
-                Arguments.of("cc", "cc", new int[]{0})
+                Arguments.of("cc", "cc", new int[]{0}),
+                Arguments.of("Привет, мир", "ивет", new int[]{2}),
+                Arguments.of("Привет, мир", "и", new int[]{2, 9})
         );
     }
 
@@ -48,6 +54,22 @@ class StringFinderTest {
         } finally {
             if (f != null) //noinspection ResultOfMethodCallIgnored
                 f.delete();
+        }
+    }
+
+
+    @Test
+    @DisplayName("Test with non-file reader")
+    void findSubstring_reader(){
+        var haystack = "котлин лучше жабы";
+        var rdr = new StringReader(haystack);
+
+        try {
+            var res = StringFinder.findSubstring(rdr, "лучше").stream().mapToInt(Integer::intValue).toArray();
+            assertArrayEquals(res, new int[]{7});
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
         }
     }
 }
