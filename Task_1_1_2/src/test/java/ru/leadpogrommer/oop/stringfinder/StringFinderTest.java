@@ -37,9 +37,9 @@ class StringFinderTest {
      * @param nums     Array of expected indexes
      * @throws IOException On temporary file creation error
      */
-    @ParameterizedTest(name = "[{index}] Search {1} in {0}")
+    @ParameterizedTest(name = "File [{index}] Search {1} in {0}")
     @MethodSource("getStrings")
-    void findSubstring(String haystack, String needle, int[] nums) throws IOException {
+    void findSubstring_file(String haystack, String needle, int[] nums) throws IOException {
         File f = null;
         try {
             f = File.createTempFile("---", "---");
@@ -58,15 +58,14 @@ class StringFinderTest {
     }
 
 
-    @Test
-    @DisplayName("Test with non-file reader")
-    void findSubstring_reader(){
-        var haystack = "котлин лучше жабы";
+    @ParameterizedTest(name = "Reader [{index}] Search {1} in {0}")
+    @MethodSource("getStrings")
+    void findSubstring_reader(String haystack, String needle, int[] nums){
         var rdr = new StringReader(haystack);
 
         try {
-            var res = StringFinder.findSubstring(rdr, "лучше").stream().mapToInt(Integer::intValue).toArray();
-            assertArrayEquals(res, new int[]{7});
+            var res = StringFinder.findSubstring(rdr, needle).stream().mapToInt(Integer::intValue).toArray();
+            assertArrayEquals(res, nums);
         } catch (IOException e) {
             e.printStackTrace();
             fail();

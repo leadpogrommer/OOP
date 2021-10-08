@@ -23,7 +23,9 @@ public class StringFinder {
         var suffshift = new int[m + 1];
         Arrays.fill(suffshift, m);
         var z = new int[m];
-        for (int j = 1, maxZidx = 0, maxZ = 0; j < m; j++) {
+        int maxZidx = 0;
+        int maxZ = 0;
+        for (int j = 1; j < m; j++) {
             if (j <= maxZ) z[j] = Math.min(maxZ - j + 1, z[j - maxZidx]);
             while (j + z[j] < m && s[m - 1 - z[j]] == s[m - 1 - (j + z[j])]) z[j]++;
             if (j + z[j] - 1 > maxZ) {
