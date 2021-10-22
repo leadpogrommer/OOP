@@ -2,6 +2,7 @@ package ru.leadpogrommer.oop.stack;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.EmptyStackException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,6 +64,18 @@ class StackTest {
         assertThat(stack.getSize()).isEqualTo(4);
 
         assertThrows(IllegalArgumentException.class, () -> stack.popStack(10));
+    }
+
+    @Test
+    void iterate() {
+        var stack = stackOfInts(6);
+        var arr = new ArrayList<Integer>();
+
+        for (var elem : stack) {
+            arr.add(elem);
+        }
+
+        assertThat(arr).containsExactly(5, 4, 3, 2, 1, 0);
     }
 
 }

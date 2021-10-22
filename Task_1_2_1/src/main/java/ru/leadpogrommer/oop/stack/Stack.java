@@ -1,15 +1,13 @@
 package ru.leadpogrommer.oop.stack;
 
-import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.List;
+import java.util.*;
 
 /**
  * Generic stack (FIFO collection)
  *
  * @param <T> Element type
  */
-public class Stack<T> {
+public class Stack<T> implements Iterable<T> {
     private Node topNode;
     private int count;
 
@@ -113,6 +111,27 @@ public class Stack<T> {
     public int getSize() {
         return count;
     }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<>() {
+            Node currentNode = topNode;
+
+            @Override
+            public boolean hasNext() {
+                return currentNode != null;
+            }
+
+            @Override
+            public T next() {
+                if (currentNode == null) throw new NoSuchElementException();
+                var ret = currentNode.val;
+                currentNode = currentNode.prevNode;
+                return ret;
+            }
+        };
+    }
+
 
     private class Node {
         public T val;
