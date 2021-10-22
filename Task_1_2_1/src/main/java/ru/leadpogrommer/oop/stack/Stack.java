@@ -4,18 +4,25 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
 
+/**
+ * Generic stack (FIFO collection)
+ *
+ * @param <T> Element type
+ */
 public class Stack<T> {
-    private class Node{
-        public T val;
-        public Node prevNode;
-    }
+    private Node topNode;
+    private int count;
 
-    Stack(){
+    public Stack() {
         count = 0;
-        topNode = new Node();
     }
 
-    void push(T v){
+    /**
+     * Pushes new element onto stack
+     *
+     * @param v Element to push
+     */
+    public void push(T v) {
         var newNode = new Node();
         newNode.val = v;
         newNode.prevNode = topNode;
@@ -23,22 +30,35 @@ public class Stack<T> {
         count++;
     }
 
-    T pop(){
-        if(count == 0)throw new EmptyStackException();
+    /**
+     * Remove top element from the stack
+     *
+     * @return Top element
+     * @throws EmptyStackException if stack is empty
+     */
+    public T pop() throws EmptyStackException {
+        if (count == 0) throw new EmptyStackException();
         var ret = topNode.val;
         topNode = topNode.prevNode;
         count--;
         return ret;
     }
 
-    Stack<T> popStack(int c){
-        if(c > count)throw new IllegalArgumentException();
+    /**
+     * Return c top elements of the stack as new stack (these elements are removed from stack)
+     *
+     * @param c Number of elements to pop
+     * @return Popped stack
+     * @throws IllegalArgumentException if c is bigger than size of the stack
+     */
+    public Stack<T> popStack(int c) throws IllegalArgumentException {
+        if (c > count) throw new IllegalArgumentException();
         var ret = new Stack<T>();
-        if(c == 0)return ret;
+        if (c == 0) return ret;
         ret.count = c;
         count -= c;
         Node n = topNode;
-        for(int i = 1; i < c; i++)n = n.prevNode;
+        for (int i = 1; i < c; i++) n = n.prevNode;
         var oldPrevNode = n.prevNode;
         n.prevNode = ret.topNode;
         ret.topNode = topNode;
@@ -46,40 +66,56 @@ public class Stack<T> {
         return ret;
     }
 
-
-    void pushStack(Stack<T> source){
-        Node n;
-        if(source.getCount() == 0)return;
+    /**
+     * Pushes source onto stack. Source is not modified
+     *
+     * @param source Stack to push
+     */
+    public void pushStack(Stack<T> source) {
+        if (source.getSize() == 0) return;
         count += source.count;
-        for(n = source.topNode; n.prevNode.prevNode != null; n = n.prevNode);
-        source.count = 0;
-        var sourceGuardian = n.prevNode;
-        n.prevNode = topNode;
-        topNode = source.topNode;
 
-        source.topNode = sourceGuardian;
+        var prevTopNode = topNode;
+        var sourceNode = source.topNode;
+        var destinationNode = new Node();
+        topNode = destinationNode;
+        while (sourceNode != null) {
+            destinationNode.val = sourceNode.val;
+            sourceNode = sourceNode.prevNode;
+            if (sourceNode != null) {
+                destinationNode.prevNode = new Node();
+                destinationNode = destinationNode.prevNode;
+            }
+        }
+        destinationNode.prevNode = prevTopNode;
 
 
     }
 
-
-    public List<T> toList(){
+    /**
+     * Converts stack to list
+     *
+     * @return list of stack elements
+     */
+    public List<T> toList() {
         var ret = new ArrayList<T>();
         var n = topNode;
-        while (n.prevNode != null){
+        while (n != null) {
             ret.add(0, n.val);
             n = n.prevNode;
-        };
+        }
         return ret;
     }
 
-
-    private Node topNode;
-
-
-    private int count;
-
-    public int getCount() {
+    /**
+     * @return size of the stack
+     */
+    public int getSize() {
         return count;
+    }
+
+    private class Node {
+        public T val;
+        public Node prevNode;
     }
 }
