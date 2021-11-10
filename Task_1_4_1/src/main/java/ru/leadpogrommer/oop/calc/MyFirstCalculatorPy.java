@@ -24,6 +24,16 @@ public class MyFirstCalculatorPy {
     private final List<Operation> operations = new ArrayList<>();
     private final List<ValueParser> valueParsers = new ArrayList<>();
 
+    static class UnknownTokenException extends RuntimeException{
+        public final String tokenText;
+        UnknownTokenException(String message, String tokenText){
+            super(message);
+            this.tokenText = tokenText;
+        }
+    }
+
+    static class InvalidArityException extends RuntimeException{}
+
     MyFirstCalculatorPy() {
         operations.add(new Operation("\\+", 2, (values) -> values[0].add(values[1])));
         operations.add(new Operation("-", 2, (values) -> values[0].subtract(values[1])));
@@ -47,9 +57,11 @@ public class MyFirstCalculatorPy {
             if (str.equals(".quit")) break;
             try {
                 var res = calc.evaluateString(str);
-                System.out.println(res);
-            } catch (Exception e) {
+                System.out.println(res.getReal());
+            } catch (UnknownTokenException e) {
                 System.out.println("ERROR: " + e.getMessage());
+            }catch (InvalidArityException e){
+                System.out.println("Invalid number of arguments");
             }
         }
     }
@@ -67,7 +79,7 @@ public class MyFirstCalculatorPy {
                     return new Token(null, vp.parse().apply(s));
                 }
             }
-            throw new IllegalStateException();
+            throw new UnknownTokenException("Unknown token: " + s, s);
         }).toArray();
         var tokens = Arrays.copyOf(wtf, wtf.length, Token[].class);
 
@@ -76,7 +88,7 @@ public class MyFirstCalculatorPy {
             var token = tokens[i];
             if (token.isOperation()) {
                 var op = token.op();
-                if (stack.size() < op.arity()) throw new IllegalStateException();
+                if (stack.size() < op.arity()) throw new InvalidArityException();
                 Complex[] args = new Complex[op.arity()];
                 for (var j = 0; j < op.arity(); j++) {
                     args[j] = stack.pop();
@@ -87,7 +99,7 @@ public class MyFirstCalculatorPy {
             }
         }
 
-        if (stack.size() != 1) throw new IllegalStateException();
+        if (stack.size() != 1) throw new InvalidArityException();
         return stack.pop();
     }
 
