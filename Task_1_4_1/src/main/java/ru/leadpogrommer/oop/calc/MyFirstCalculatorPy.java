@@ -3,26 +3,24 @@ package ru.leadpogrommer.oop.calc;
 import org.apache.commons.math3.complex.Complex;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
 
-record Operation(String regex, int arity, Function<Complex[], Complex> evaluate) {
-}
-
-record ValueParser(String regex, Function<String, Complex> parse) {
-}
-
-record Token(Operation op, Complex val) {
-    public boolean isOperation() {
-        return op != null;
+record Operation(String regex, int arity, BiFunction<Complex[], String, Complex> evaluate) {
+    Operation(String regex, int arity, Function<Complex[], Complex> f){
+        this(regex, arity, (values, s) -> f.apply(values));
     }
+}
+
+
+record Token(Operation op, String text) {
 }
 
 
 public class MyFirstCalculatorPy {
     private final List<Operation> operations = new ArrayList<>();
-    private final List<ValueParser> valueParsers = new ArrayList<>();
 
     static class UnknownTokenException extends RuntimeException{
         public final String tokenText;
@@ -45,7 +43,9 @@ public class MyFirstCalculatorPy {
         operations.add(new Operation("pow", 2, (values) -> values[0].pow(values[1])));
         operations.add(new Operation("sqrt", 1, (values) -> values[0].sqrt()));
 
-        valueParsers.add(new ValueParser("-?\\d+(\\.\\d+)?", (s) -> new Complex(Double.parseDouble(s))));
+        operations.add(new Operation("-?\\d+(\\.\\d+)?", 0, (values, s) -> new Complex(Double.parseDouble(s))));
+        operations.add(new Operation("PI", 0, (values, s) -> new Complex(Math.PI)));
+        operations.add(new Operation("e", 0, (values, s) -> new Complex(Math.E)));
     }
 
     public static void main(String[] args) {
@@ -71,12 +71,7 @@ public class MyFirstCalculatorPy {
         var wtf = Arrays.stream(str.split("\\s+")).map((s) -> {
             for (var op : operations) {
                 if (Pattern.matches("^" + op.regex() + "$", s)) {
-                    return new Token(op, null);
-                }
-            }
-            for (var vp : valueParsers) {
-                if (Pattern.matches("^" + vp.regex() + "$", s)) {
-                    return new Token(null, vp.parse().apply(s));
+                    return new Token(op, s);
                 }
             }
             throw new UnknownTokenException("Unknown token: " + s, s);
@@ -86,17 +81,13 @@ public class MyFirstCalculatorPy {
 
         for (var i = tokens.length - 1; i >= 0; i--) {
             var token = tokens[i];
-            if (token.isOperation()) {
-                var op = token.op();
-                if (stack.size() < op.arity()) throw new InvalidArityException();
-                Complex[] args = new Complex[op.arity()];
-                for (var j = 0; j < op.arity(); j++) {
-                    args[j] = stack.pop();
-                }
-                stack.push(op.evaluate().apply(args));
-            } else {
-                stack.push(token.val());
+            var op = token.op();
+            if (stack.size() < op.arity()) throw new InvalidArityException();
+            Complex[] args = new Complex[op.arity()];
+            for (var j = 0; j < op.arity(); j++) {
+                args[j] = stack.pop();
             }
+            stack.push(op.evaluate().apply(args, token.text()));
         }
 
         if (stack.size() != 1) throw new InvalidArityException();

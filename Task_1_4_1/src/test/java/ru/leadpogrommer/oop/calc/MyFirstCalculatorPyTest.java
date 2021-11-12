@@ -20,7 +20,8 @@ class MyFirstCalculatorPyTest {
                 Arguments.of("sin 0", 0d),
                 Arguments.of("pow 2 10", 1024d),
                 Arguments.of("sqrt 9", "3"),
-                Arguments.of("log 2.718281828459045", 1d)
+                Arguments.of("log e", 1d),
+                Arguments.of("sin / PI 2", 1d)
         );
     }
 
@@ -34,12 +35,12 @@ class MyFirstCalculatorPyTest {
     @Test
     @DisplayName("Test invalid token")
     void evaluateString_InvalidToken(){
-        assertThrows(MyFirstCalculatorPy.UnknownTokenException.class, () -> {new MyFirstCalculatorPy().evaluateString("aboba");});
+        assertThrows(MyFirstCalculatorPy.UnknownTokenException.class, () -> new MyFirstCalculatorPy().evaluateString("aboba"));
     }
 
     @Test
     @DisplayName("Test invalid arity")
     void evaluateString_InvalidArity(){
-        assertThrows(MyFirstCalculatorPy.InvalidArityException.class, () -> {new MyFirstCalculatorPy().evaluateString("+ 1");});
+        assertThrows(MyFirstCalculatorPy.InvalidArityException.class, () -> new MyFirstCalculatorPy().evaluateString("+ 1"));
     }
 }
