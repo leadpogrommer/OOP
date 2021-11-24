@@ -1,48 +1,55 @@
 package ru.leadpogrommer.oop.notebook;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.Reader;
-import java.util.*;
+import java.io.Writer;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Notebook {
-    private ArrayList<Note> notes = new ArrayList<>();
+    private final Gson gson;
+    private List<Note> notes = new ArrayList<>();
 
-    public void load(Reader reader){
-        var gson = new Gson();
-        ArrayList<Note> loaded = gson.fromJson(reader, new TypeToken<ArrayList<Note>>(){}.getType());
-        if(loaded != null)notes = loaded;
+    Notebook() {
+        gson = new GsonBuilder()
+                .registerTypeAdapter(Instant.class, (JsonDeserializer<Instant>) (json, typeOfT, context) -> Instant.ofEpochMilli(json.getAsLong()))
+                .registerTypeAdapter(Instant.class, (JsonSerializer<Instant>) (src, typeOfSrc, context) -> new JsonPrimitive(src.toEpochMilli()))
+                .create();
     }
 
-    public String save(){
-        var gson = new Gson();
-        return gson.toJson(notes);
+    public void load(Reader reader) {
+        ArrayList<Note> loaded = gson.fromJson(reader, new TypeToken<ArrayList<Note>>() {
+        }.getType());
+        if (loaded != null) notes = loaded;
     }
 
-    public void add(Note note){
-        notes.add(note);
+    public void save(Writer writer) {
+        gson.toJson(notes, writer);
     }
 
-    public void remove(String title){
-        notes.removeIf(note -> note.text.equals(title));
+    public void add(String title, String text) {
+        notes.add(new Note(Instant.now().truncatedTo(ChronoUnit.MILLIS), title, text));
     }
 
-    public Collection<Note> getNotes(){
+    public void remove(String title) {
+        notes.removeIf(note -> note.title().equals(title));
+    }
+
+    public List<Note> getNotes() {
         return notes;
     }
 
-    public Collection<Note> getNotes(Date minDate, Date maxDate, String[] keywords){
-//        System.out.println(minDate);
-//        for(var note: notes){
-//            System.out.println(note.timestamp);
-//        }
-//        System.out.println(maxDate);
+    public List<Note> getNotes(Instant minDate, Instant maxDate, String[] keywords) {
         return notes.stream().filter((note) ->
-                        note.timestamp.after(minDate) &&
-                        note.timestamp.before(maxDate) &&
-                        Arrays.stream(keywords).anyMatch((keyword) -> note.title.toLowerCase().contains(keyword.toLowerCase()))
+                note.timestamp().isAfter(minDate) &&
+                        note.timestamp().isBefore(maxDate) &&
+                        Arrays.stream(keywords).anyMatch((keyword) -> note.title().toLowerCase().contains(keyword.toLowerCase()))
         ).collect(Collectors.toList());
     }
 
