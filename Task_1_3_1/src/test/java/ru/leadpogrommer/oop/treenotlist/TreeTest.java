@@ -31,7 +31,7 @@ class TreeTest {
         return ret;
     }
 
-    @ParameterizedTest(name = "Test sort on random array #{index}")
+    @ParameterizedTest(name = "Test tree on random array #{index}")
     @MethodSource("arrayProvider")
     void randomArrays(List<Integer> arr) {
         var shuffled = new ArrayList<>(arr);
@@ -114,6 +114,14 @@ class TreeTest {
             }
         });
 
+    }
+
+    @Test
+    void stream(){
+        var tree = new Tree<String>();
+        tree.addAll(List.of("aaa", "bbbb", "sadnd", "aboba", "bs", "brainfuck", "nope"));
+        var res = tree.stream().filter((s)->s.contains("b")).toList();
+        assertThat(res).containsExactlyInAnyOrder("bbbb", "aboba", "bs", "brainfuck");
     }
 
 
