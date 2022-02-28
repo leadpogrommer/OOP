@@ -1,7 +1,7 @@
 package ru.leadpogrommer.oop.threads;
 
 public class ThreadedPrimeChecker extends PrimeChecker {
-    private Thread[] pool;
+    final private Thread[] pool;
 
     ThreadedPrimeChecker(int n){
         pool = new Thread[n];
