@@ -3,15 +3,20 @@ package ru.leadpogrommer.oop.pizza;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
-public class OrderQueue<T> {
-    private final Queue<T> queue;
+public class Queue<T> {
+    private final java.util.Queue<T> queue;
     int size;
 
-    OrderQueue(int size) {
+    Queue(int size) {
         queue = new ArrayDeque<>(size);
         this.size = size;
+    }
+
+    Integer length() throws InterruptedException {
+        synchronized (queue) {
+            return queue.size();
+        }
     }
 
     T get() throws InterruptedException {
