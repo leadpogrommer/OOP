@@ -1,10 +1,10 @@
-package ru.leadpogrommer.oop.pizza;
+package ru.leadpogrommer.oop.pizza.pizzeria.worker;
 
-abstract class Worker implements Runnable {
+public abstract class Worker implements Runnable {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 loop();
             }
         } catch (InterruptedException ignored) {

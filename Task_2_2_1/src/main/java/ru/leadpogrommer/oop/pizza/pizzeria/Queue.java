@@ -1,4 +1,4 @@
-package ru.leadpogrommer.oop.pizza;
+package ru.leadpogrommer.oop.pizza.pizzeria;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -8,28 +8,28 @@ public class Queue<T> {
     private final java.util.Queue<T> queue;
     int size;
 
-    Queue(int size) {
+    public Queue(int size) {
         queue = new ArrayDeque<>(size);
         this.size = size;
     }
 
-    Integer length() throws InterruptedException {
+    public Integer length() throws InterruptedException {
         synchronized (queue) {
             return queue.size();
         }
     }
 
-    T get() throws InterruptedException {
+    public T get() throws InterruptedException {
         synchronized (queue) {
             while (queue.isEmpty()) {
                 queue.wait();
             }
-            queue.notify();
+            queue.notifyAll();
             return queue.remove();
         }
     }
 
-    List<T> getMany(int maxCount) throws InterruptedException {
+    public List<T> getMany(int maxCount) throws InterruptedException {
         synchronized (queue) {
             while (queue.isEmpty()) {
                 queue.wait();
@@ -42,7 +42,7 @@ public class Queue<T> {
         }
     }
 
-    void put(T order) throws InterruptedException {
+    public void put(T order) throws InterruptedException {
         synchronized (queue) {
             while (queue.size() >= size) {
                 queue.wait();
@@ -50,7 +50,7 @@ public class Queue<T> {
             if (!queue.add(order)) {
                 throw new IllegalStateException("Element was not added");
             }
-            queue.notify();
+            queue.notifyAll();
         }
     }
 }

@@ -2,6 +2,7 @@ package ru.leadpogrommer.oop.pizza;
 
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
+import ru.leadpogrommer.oop.pizza.pizzeria.Queue;
 
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
