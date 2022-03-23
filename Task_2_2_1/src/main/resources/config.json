@@ -1,0 +1,30 @@
+{
+  "storageSize": 8,
+  "threadCount": 12,
+  "cooks": [
+    {
+      "name": "Быстрый повар",
+      "cookTime": 1
+    },
+    {
+      "name": "Средний повар",
+      "cookTime": 2
+    },
+    {
+      "name": "Плохой повар",
+      "cookTime": 3
+    }
+  ],
+  "deliveryMen": [
+    {
+      "name": "Гонщик нелегальный",
+      "deliveryTime": 5,
+      "trunkSize": 2
+    },
+    {
+      "name": "Улитка",
+      "deliveryTime": 8,
+      "trunkSize": 3
+    }
+  ]
+}
