@@ -1,5 +1,5 @@
 {
-  "storageSize": 10,
+  "storageSize": 8,
   "threadCount": 12,
   "cooks": [
     {
@@ -18,12 +18,12 @@
   "deliveryMen": [
     {
       "name": "Гонщик нелегальный",
-      "deliveryTime": 6,
+      "deliveryTime": 5,
       "trunkSize": 2
     },
     {
       "name": "Улитка",
-      "deliveryTime": 10,
+      "deliveryTime": 8,
       "trunkSize": 3
     }
   ]

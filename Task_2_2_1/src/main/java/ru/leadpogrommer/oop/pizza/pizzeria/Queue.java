@@ -38,6 +38,7 @@ public class Queue<T> {
             while (res.size() < maxCount && !queue.isEmpty()) {
                 res.add(queue.remove());
             }
+            queue.notifyAll();
             return res;
         }
     }
