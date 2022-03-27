@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/home/ilya/work/OOP/Task_2_2_1/src/main/java/ru/leadpogrommer/oop/pizza</OriginalElement>
+  <nodes>
+    <node x="730.25" y="985.7719200887902">ru.leadpogrommer.oop.pizza.pizzeria.Config.Cook</node>
+    <node x="877.25" y="973.2719200887902">ru.leadpogrommer.oop.pizza.pizzeria.Config.DeliveryMan</node>
+    <node x="0.0" y="550.0">ru.leadpogrommer.oop.pizza.pizzeria.worker.DeliveryWorker</node>
+    <node x="570.0" y="756.0">ru.leadpogrommer.oop.pizza.pizzeria.Order</node>
+    <node x="764.0" y="756.0">ru.leadpogrommer.oop.pizza.pizzeria.Config</node>
+    <node x="350.0" y="756.0">ru.leadpogrommer.oop.pizza.pizzeria.Queue</node>
+    <node x="0.0" y="756.0">ru.leadpogrommer.oop.pizza.pizzeria.Pizzeria</node>
+    <node x="1092.0" y="550.0">ru.leadpogrommer.oop.pizza.pizzeria.worker.CookWorker</node>
+    <node x="466.0" y="390.0">ru.leadpogrommer.oop.pizza.pizzeria.worker.Worker</node>
+    <node x="519.0" y="550.0">ru.leadpogrommer.oop.pizza.pizzeria.worker.DispatcherWorker</node>
+    <node x="0.0" y="390.0">ru.leadpogrommer.oop.pizza.Main</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ru.leadpogrommer.oop.pizza.pizzeria.worker.DispatcherWorker" target="ru.leadpogrommer.oop.pizza.pizzeria.worker.Worker" relationship="GENERALIZATION">
+      <point x="0.0" y="-55.5" />
+      <point x="795.5" y="525.0" />
+      <point x="522.5" y="525.0" />
+      <point x="0.0" y="55.0" />
+    </edge>
+    <edge source="ru.leadpogrommer.oop.pizza.pizzeria.worker.DeliveryWorker" target="ru.leadpogrommer.oop.pizza.pizzeria.worker.Worker" relationship="GENERALIZATION">
+      <point x="0.0" y="-80.5" />
+      <point x="249.5" y="525.0" />
+      <point x="522.5" y="525.0" />
+      <point x="0.0" y="55.0" />
+    </edge>
+    <edge source="ru.leadpogrommer.oop.pizza.pizzeria.Config.Cook" target="ru.leadpogrommer.oop.pizza.pizzeria.Config" relationship="INNER_CLASS">
+      <point x="0.0" y="-55.0" />
+      <point x="793.75" y="948.2719200887902" />
+      <point x="872.5" y="948.2719200887902" />
+      <point x="0.0" y="80.0" />
+    </edge>
+    <edge source="ru.leadpogrommer.oop.pizza.pizzeria.Config.DeliveryMan" target="ru.leadpogrommer.oop.pizza.pizzeria.Config" relationship="INNER_CLASS">
+      <point x="0.0" y="-67.5" />
+      <point x="951.25" y="948.2719200887902" />
+      <point x="872.5" y="948.2719200887902" />
+      <point x="0.0" y="80.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.825091575091575" showDependencies="false" x="756.2336293007813" y="790.5172031076628" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>packageLocal</VISIBILITY>
+</Diagram>
+
