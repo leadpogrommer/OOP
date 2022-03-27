@@ -1,0 +1,15 @@
+Benchmark           (cores)  Mode  Cnt  Score   Error  Units
+Simple.simple           N/A  avgt    3  0,267 ± 0,003   s/op
+Threaded.benchmark        1  avgt    3  0,269 ± 0,013   s/op
+Threaded.benchmark        2  avgt    3  0,135 ± 0,006   s/op
+Threaded.benchmark        3  avgt    3  0,091 ± 0,010   s/op
+Threaded.benchmark        4  avgt    3  0,068 ± 0,007   s/op
+Threaded.benchmark        5  avgt    3  0,055 ± 0,008   s/op
+Threaded.benchmark        6  avgt    3  0,048 ± 0,051   s/op
+Threaded.benchmark        7  avgt    3  0,047 ± 0,013   s/op
+Threaded.benchmark        8  avgt    3  0,052 ± 0,037   s/op
+Threaded.benchmark        9  avgt    3  0,049 ± 0,044   s/op
+Threaded.benchmark       10  avgt    3  0,045 ± 0,006   s/op
+Threaded.benchmark       11  avgt    3  0,046 ± 0,005   s/op
+Threaded.benchmark       12  avgt    3  0,045 ± 0,002   s/op
+Simple.streamed         N/A  avgt    3  0,047 ± 0,008   s/op
