@@ -1,6 +1,6 @@
 package ru.leadpogrommer.oop.snake
 
-import tornadofx.*
+import tornadofx.launch
 
 fun main() {
     launch<SnakeApp>()

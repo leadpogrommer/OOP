@@ -3,25 +3,22 @@ package ru.leadpogrommer.oop.snake.controllers
 import javafx.animation.Animation
 import javafx.animation.KeyFrame
 import javafx.animation.Timeline
-import javafx.beans.binding.Binding
-import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.util.Duration
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import ru.leadpogrommer.oop.snake.models.Cell
+import ru.leadpogrommer.oop.snake.models.Level
 import ru.leadpogrommer.oop.snake.models.SnakeDirection
 import ru.leadpogrommer.oop.snake.models.SnakeGame
-import tornadofx.*
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-import ru.leadpogrommer.oop.snake.models.Level
+import tornadofx.Controller
 
-class GameController: Controller(), EventHandler<KeyEvent> {
+class GameController : Controller(), EventHandler<KeyEvent> {
     private val timeline = Timeline(60.0)
     val field = SimpleObjectProperty<Array<Array<Cell>>>()
     val fieldWidth = SimpleIntegerProperty()
@@ -33,18 +30,7 @@ class GameController: Controller(), EventHandler<KeyEvent> {
 
     private var game = SnakeGame(levels.random())
 
-    // TODO: replace this with bindings
-    private fun setProperties(){
-        field.set(game.field.copyOf())
-        gameOver.set(game.gameOver)
-        score.set(game.score)
-        fieldWidth.set(game.width)
-        fieldHeight.set(game.height)
-    }
 
-    fun setDirection(d: SnakeDirection){
-        game.snakeDirection = d
-    }
     init {
 
         timeline.cycleCount = Animation.INDEFINITE
@@ -56,14 +42,19 @@ class GameController: Controller(), EventHandler<KeyEvent> {
 
     }
 
-    fun pause() {
-        timeline.pause()
+    private fun setProperties() {
+        field.set(game.field.copyOf())
+        gameOver.set(game.gameOver)
+        score.set(game.score)
+        fieldWidth.set(game.width)
+        fieldHeight.set(game.height)
     }
-    fun start(){
+
+    fun start() {
         timeline.play()
     }
 
-    fun reset(){
+    fun reset() {
         timeline.stop()
         game = SnakeGame(levels.random())
         setProperties()
@@ -72,16 +63,16 @@ class GameController: Controller(), EventHandler<KeyEvent> {
     override fun handle(event: KeyEvent?) {
         event ?: return
         KeyEvent.KEY_PRESSED
-        when(event.eventType){
+        when (event.eventType) {
             KeyEvent.KEY_PRESSED -> {
-                when(event.code){
+                when (event.code) {
                     KeyCode.A -> SnakeDirection.LEFT
                     KeyCode.D -> SnakeDirection.RIGHT
                     KeyCode.W -> SnakeDirection.UP
                     KeyCode.S -> SnakeDirection.DOWN
                     else -> null
                 }?.let { direction ->
-                    setDirection(direction)
+                    game.snakeDirection = direction
                 }
             }
         }
