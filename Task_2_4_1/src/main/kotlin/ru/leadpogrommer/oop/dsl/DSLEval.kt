@@ -14,7 +14,7 @@ import kotlin.script.experimental.jvmhost.createJvmEvaluationConfigurationFromTe
 @KotlinScript(
     fileExtension = "oop.kts"
 )
-abstract class OOPScript(config: IConfigContext): IConfigContext by config{
+abstract class OOPScript(config: IConfigContext) : IConfigContext by config {
 
 }
 
@@ -26,33 +26,29 @@ private fun evalFile(scriptFile: File, config: IConfigContext): ResultWithDiagno
         defaultImports(Date::class)
     }
 
-    val evalConfig = createJvmEvaluationConfigurationFromTemplate<OOPScript>{
-        jvm{
+    val evalConfig = createJvmEvaluationConfigurationFromTemplate<OOPScript> {
+        jvm {
             constructorArgs(config)
 
         }
-//        this.
     }
 
-//    BasicJvmScriptEvaluator()
-//    BasicJvmScriptingHost().eval()
     return BasicJvmScriptingHost().eval(scriptFile.toScriptSource(), compilationConfiguration, evalConfig)
 }
 
-fun readFile(scriptFile: File): Config{
+fun readFile(scriptFile: File): Config {
     val configCtx = ConfigContext()
     val res = evalFile(scriptFile, configCtx)
-//    val result = res.valueOrNull()?.returnValue
 
-
-    res.reports.forEach{
+    res.reports.forEach {
         if (it.severity > ScriptDiagnostic.Severity.DEBUG) {
             println("${it.location} : ${it.message}" + if (it.exception == null) "" else ": ${it.exception}")
         }
     }
-    val tst = res.valueOrThrow().returnValue
-    if(tst is ResultValue.Error){
-        throw tst.error
+
+    val returnValue = res.valueOrThrow().returnValue
+    if (returnValue is ResultValue.Error) {
+        throw returnValue.error
     }
 
     return configCtx.render()
