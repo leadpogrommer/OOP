@@ -33,6 +33,12 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-html-jvm
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.5")
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+    implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+
+    // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
+    implementation("org.junit.platform:junit-platform-launcher:1.8.2")
+
 
 
 

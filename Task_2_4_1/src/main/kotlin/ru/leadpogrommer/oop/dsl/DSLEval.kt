@@ -29,7 +29,9 @@ private fun evalFile(scriptFile: File, config: IConfigContext): ResultWithDiagno
     val evalConfig = createJvmEvaluationConfigurationFromTemplate<OOPScript>{
         jvm{
             constructorArgs(config)
+
         }
+//        this.
     }
 
 //    BasicJvmScriptEvaluator()
@@ -48,7 +50,10 @@ fun readFile(scriptFile: File): Config{
             println("${it.location} : ${it.message}" + if (it.exception == null) "" else ": ${it.exception}")
         }
     }
-
+    val tst = res.valueOrThrow().returnValue
+    if(tst is ResultValue.Error){
+        throw tst.error
+    }
 
     return configCtx.render()
 }
